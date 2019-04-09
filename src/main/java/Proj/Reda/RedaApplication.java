@@ -5,6 +5,7 @@ import Proj.Reda.Enum.SaisonSession;
 import Proj.Reda.Enum.TypeProgramme;
 import Proj.Reda.Repository.CoursRep;
 import Proj.Reda.Repository.PersonneRepository;
+import Proj.Reda.Repository.ProgrammeRepository;
 import Proj.Reda.Repository.UniversiteRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +35,8 @@ public class RedaApplication implements CommandLineRunner {
 	@Autowired
     private CoursRep coursRep;
 
+	@Autowired
+	private ProgrammeRepository programmeRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(RedaApplication.class, args);
@@ -110,10 +113,13 @@ public class RedaApplication implements CommandLineRunner {
         // recuperer cours de universite
         logger.info("recuperer cours de universite -> {}", universiteRepository.recupererCours(1L).iterator().next().getId());
 
-        //recuperer session de universite
+        // recuperer session de universite
         logger.info("recuperer sessions de universite -> {}", universiteRepository.recupererSessions(1L).iterator().next().getId());
 
-
+        // ajouter cours dans programme
+		programme1.getCours().add(cour1);
+		programme1.getCours().add(cour2);
+		programmeRepository.save(programme1);
 
 
 

@@ -7,6 +7,8 @@ import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "COUR")
@@ -38,6 +40,25 @@ public class Cour {
             inverseJoinColumns =
             @JoinColumn(nullable = false))
     Universite universite;
+
+    public Universite getUniversite() {
+        return universite;
+    }
+
+    public void setUniversite(Universite universite) {
+        this.universite = universite;
+    }
+
+    public Set<Programme> getProgrammes() {
+        return programmes;
+    }
+
+    public void setProgrammes(Set<Programme> programmes) {
+        this.programmes = programmes;
+    }
+
+    @ManyToMany(mappedBy = "cours")
+    protected Set<Programme> programmes = new HashSet<Programme>();
 
     public Cour() {
     }

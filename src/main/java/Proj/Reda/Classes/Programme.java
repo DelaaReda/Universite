@@ -5,6 +5,8 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Programme {
@@ -35,6 +37,24 @@ public class Programme {
             inverseJoinColumns =
             @JoinColumn(nullable = false))
     Universite universite;
+
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name = "PROGRAMME_COUR",
+            joinColumns = @JoinColumn(name = "PROGRAMME_ID"),
+            inverseJoinColumns = @JoinColumn(name = "COUR_ID")
+    )
+    protected Set<Cour> cours = new HashSet<Cour>();
+
+    public Set<Cour> getCours() {
+        return cours;
+    }
+
+    public void setCours(Set<Cour> cours) {
+        this.cours = cours;
+    }
+
+
 
     public Long getId() {
         return id;
