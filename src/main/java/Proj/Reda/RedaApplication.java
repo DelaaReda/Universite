@@ -133,8 +133,16 @@ public class RedaApplication implements CommandLineRunner {
         // Retrouve etudiants inscrits dans un cours Par Code de Cour
         List<Etudiant> etudiantstrouves = coursDonneRepository.retrouveEtudiantsInscrits("INF-1");
         logger.info("Retrouve Etudiants inscrits -> {}", etudiantstrouves);
-        for (Etudiant etudiantrouve : etudiantstrouves)
-            logger.info("Retrouve Code Permanent de Etudiant inscris dans coursdonnee -> {}", etudiantrouve.getCodePerm());
+        for (Etudiant stud : etudiantstrouves)
+            logger.info("Retrouve Code Permanent de Etudiant inscris dans coursdonnee -> {}", stud.getCodePerm());
+
+
+        // Retrouve etudiants inscrits dans un cours Par Code de Cour
+        List<Professeur> profstrouves = coursDonneRepository.retrouveProfesseursDuCour("INF-2");
+        logger.info("Retrouve Professeurs du cour -> {}", profstrouves);
+        for (Professeur prof : profstrouves)
+            logger.info("Retrouve Num Assurance Sociale de Prof respondable du coursdonnee -> {}", prof.getNumAssSociale());
+
 
 
         // get all universites

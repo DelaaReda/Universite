@@ -57,7 +57,10 @@ public class CoursDonneRepository {
         ).setParameter("courId", courid);
         return query.getResultList();
     }
-    public List<Professeur> retrouveProfesseursDuCour() {
-        return em.createQuery("select prof from Professeur prof", Professeur.class).getResultList();
+    public List<Professeur> retrouveProfesseursDuCour(String courid) {
+        Query query = em.createQuery(
+                "select p from Professeur p LEFT JOIN CoursDonne c ON c.personne = p.id JOIN Personne pers ON pers.id = p.id where c.cour.id = :courId"
+        ).setParameter("courId", courid);
+        return query.getResultList();
     }
 }
