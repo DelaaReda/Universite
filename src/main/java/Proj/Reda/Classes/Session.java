@@ -6,10 +6,20 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Session {
 
+    @ManyToOne
+    @JoinTable(
+            name = "SESSION_UNIVERSITE",
+            joinColumns =
+            @JoinColumn(name = "SESSION_ID"),
+            inverseJoinColumns =
+            @JoinColumn(nullable = false))
+    Universite universite;
     @Id
     @GeneratedValue
     private Long id;
@@ -30,14 +40,27 @@ public class Session {
     @Temporal(TemporalType.DATE)
     private Date dateFin;
 
-    @ManyToOne
-    @JoinTable(
-            name = "SESSION_UNIVERSITE",
-            joinColumns =
-            @JoinColumn(name = "SESSION_ID"),
-            inverseJoinColumns =
-            @JoinColumn(nullable = false))
-    Universite universite;
+    @OneToMany(mappedBy = "session", cascade = CascadeType.PERSIST)
+    protected Set<CoursDonne> coursDonnes = new HashSet<>();
+
+    public Set<CoursDonne> getCoursDonnes() {
+        return coursDonnes;
+    }
+
+    public void setCoursDonnes(Set<CoursDonne> coursDonnes) {
+        this.coursDonnes = coursDonnes;
+    }
+
+    public Session(int annee, SaisonSession saison, Date dateDebut, Date dateFin, Universite universite) {
+        this.annee = annee;
+        this.saison = saison;
+        this.dateDebut = dateDebut;
+        this.dateFin = dateFin;
+        this.universite = universite;
+    }
+
+    public Session() {
+    }
 
     public Long getId() {
         return id;
@@ -85,16 +108,5 @@ public class Session {
 
     public void setUniversite(Universite universite) {
         this.universite = universite;
-    }
-
-    public Session(int annee, SaisonSession saison, Date dateDebut, Date dateFin, Universite universite) {
-        this.annee = annee;
-        this.saison = saison;
-        this.dateDebut = dateDebut;
-        this.dateFin = dateFin;
-        this.universite = universite;
-    }
-
-    public Session() {
     }
 }

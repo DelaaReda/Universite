@@ -1,17 +1,26 @@
 package Proj.Reda.Classes;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-
 import javax.persistence.*;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@Table(
+        name = "PERSONNE",
+        uniqueConstraints =
+        @UniqueConstraint(
+                name = "UNQ_USERNAME_EMAIL",
+                columnNames = { "COURRIEL" }
+        ),indexes = {@Index(
+        name = "IDX_COURRIEL",
+        columnList = "COURRIEL")}
+)
 public abstract class Personne {
 
 
@@ -51,7 +60,19 @@ public abstract class Personne {
             @JoinColumn(nullable = false))
     Universite universite;
 
+    @OneToMany(mappedBy = "personne")
+    protected Set<CoursDonne> coursDonnes = new HashSet<>();
+
     //#####################################GETTERS_SETTERS
+
+    public Set<CoursDonne> getCoursDonnes() {
+        return coursDonnes;
+    }
+
+    public void setCoursDonnes(Set<CoursDonne> coursDonnes) {
+        this.coursDonnes = coursDonnes;
+    }
+
     public Long getId() {
         return id;
     }

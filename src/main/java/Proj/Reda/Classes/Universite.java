@@ -3,6 +3,8 @@ package Proj.Reda.Classes;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -14,6 +16,13 @@ import java.util.*;
 @org.hibernate.annotations.DynamicUpdate
 public class Universite {
 
+    @Transient
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @PostPersist
+    public void notifyAdmin(){
+        logger.info("Universite vient d'etre modifie !");
+    }
 
 
     @Id

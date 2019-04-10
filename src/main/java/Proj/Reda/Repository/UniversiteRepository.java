@@ -5,13 +5,17 @@ import Proj.Reda.Classes.*;
 import java.util.*;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PostPersist;
+import javax.persistence.Query;
 
 
+import org.hibernate.cache.spi.support.AbstractReadWriteAccess;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,10 +27,11 @@ public class UniversiteRepository {
 
     @Autowired
     EntityManager em;
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
-
     @Autowired
     SessionRepository sessionRepository;
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+
 
     public ArrayList<Personne> recupererPersonnes(Long id) {
         ArrayList<Personne> NouvelleArrayList = new ArrayList();
@@ -35,10 +40,11 @@ public class UniversiteRepository {
         return NouvelleArrayList;
     }
 
-    public Set<Cour> recupererCours(Long id) {
-        HashSet<Cour> cours = new HashSet<>();
-        cours.addAll(this.findById(id).getCours());
-        return cours;
+    public List<Cour> recupererCours(Long id) {
+        Query query = em.createQuery(
+                "select c from Cour c, Universite u where u.id = :id", Cour.class
+        ).setParameter("id", id);
+        return query.getResultList();
     }
 
     public Set<Session> recupererSessions(Long id) {
@@ -71,11 +77,11 @@ public class UniversiteRepository {
 
         return universite;
     }
-//    public void deleteProgramFromUniversite(Programme programme){
-//        Universite univ = this.findById(programme.getUniversite().getId());
-//        univ.deleteProgramme(programme);
-//        em.persist(univ);
-//    }
+
+    public void update(Universite universite) {
+        // modifications sur l'universite
+        em.refresh(universite);
+    }
 
     public List<Universite> retrieveAllUniversites() {
         return em.createQuery("select e from Universite e", Universite.class).getResultList();

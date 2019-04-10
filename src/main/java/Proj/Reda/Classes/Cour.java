@@ -41,6 +41,22 @@ public class Cour {
             @JoinColumn(nullable = false))
     Universite universite;
 
+
+    @OneToMany(mappedBy = "cour", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+    @org.hibernate.annotations.OnDelete(action = org.hibernate.annotations.OnDeleteAction.CASCADE)
+    protected Set<CoursDonne> coursDonnes = new HashSet<>();
+
+    @ManyToMany(mappedBy = "cours")
+    protected Set<Programme> programmes = new HashSet<Programme>();
+
+    public Set<CoursDonne> getCoursDonnes() {
+        return coursDonnes;
+    }
+
+    public void setCoursDonnes(Set<CoursDonne> coursDonnes) {
+        this.coursDonnes = coursDonnes;
+    }
+
     public Universite getUniversite() {
         return universite;
     }
@@ -56,13 +72,6 @@ public class Cour {
     public void setProgrammes(Set<Programme> programmes) {
         this.programmes = programmes;
     }
-
-    @ManyToMany(mappedBy = "cours")
-    protected Set<Programme> programmes = new HashSet<Programme>();
-
-    public Cour() {
-    }
-
     public String getId() {
         return id;
     }
@@ -101,5 +110,6 @@ public class Cour {
         this.nbCredits = nbCredits;
         this.universite = universite;
     }
-
+    public Cour() {
+    }
 }
