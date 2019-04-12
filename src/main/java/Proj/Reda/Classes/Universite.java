@@ -1,6 +1,7 @@
 package Proj.Reda.Classes;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.slf4j.Logger;
@@ -37,24 +38,26 @@ public class Universite {
     })
     private String nom;
 
-
-    @OneToMany(mappedBy = "universite", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "universite", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     @org.hibernate.annotations.OnDelete(action = org.hibernate.annotations.OnDeleteAction.CASCADE)
     private Set<Programme> programmes = new HashSet<>();
 
 
-
-    @OneToMany(mappedBy = "universite", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "universite", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     @org.hibernate.annotations.OnDelete(action = org.hibernate.annotations.OnDeleteAction.CASCADE)
     private Set<Cour> cours = new HashSet<>();
 
-    @OneToMany(mappedBy = "universite", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "universite", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     @org.hibernate.annotations.OnDelete(action = org.hibernate.annotations.OnDeleteAction.CASCADE)
     private Set<Session> sessions = new HashSet<>();
 
 
     //Choix de Collection pour son access rapide au cas ou (nombre etudiants pourrait depasser des milliers)
-    @OneToMany(mappedBy = "universite", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "universite", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     @org.hibernate.annotations.OnDelete(action = org.hibernate.annotations.OnDeleteAction.CASCADE)
     public Collection<Personne> personnes = new ArrayList<>();
 
@@ -122,4 +125,9 @@ public class Universite {
     public Universite(String nom) {
         this.nom = nom;
     }
+    public Universite(Long id, String nom) {
+        this.nom = nom;
+        this.id = id;
+    }
+
 }

@@ -1,8 +1,8 @@
 -- insert into programme(id,nom_prog, total_creditsobligatoires, type)
 -- values('PROG1001','HTML 7.1 Advanced', 74, 'BACCALAUREAT');
 --
-insert into universite(id,nom)
-values('1000', 'Free Universite');
+-- insert into universite(id,nom)
+-- values('1000', 'Free Universite');
 
 -- insert into session (id, annee, date_debut, date_fin, saison)
 -- values('SESS1001', 2029, {ts '2012-09-17 18:47:52.69'}, {ts '2045-09-17 18:47:52.69'}, 'AUTOMNE');

@@ -60,7 +60,7 @@ public abstract class Personne {
             @JoinColumn(nullable = false))
     Universite universite;
 
-    @OneToMany(mappedBy = "personne")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "personne")
     protected Set<CoursDonne> coursDonnes = new HashSet<>();
 
     //#####################################GETTERS_SETTERS

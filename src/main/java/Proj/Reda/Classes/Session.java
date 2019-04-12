@@ -12,7 +12,7 @@ import java.util.Set;
 @Entity
 public class Session {
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinTable(
             name = "SESSION_UNIVERSITE",
             joinColumns =
@@ -40,7 +40,7 @@ public class Session {
     @Temporal(TemporalType.DATE)
     private Date dateFin;
 
-    @OneToMany(mappedBy = "session", cascade = CascadeType.PERSIST)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "session", cascade = CascadeType.PERSIST)
     protected Set<CoursDonne> coursDonnes = new HashSet<>();
 
     public Set<CoursDonne> getCoursDonnes() {

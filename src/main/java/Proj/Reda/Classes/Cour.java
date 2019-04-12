@@ -2,6 +2,7 @@ package Proj.Reda.Classes;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -25,6 +26,13 @@ public class Cour {
     @NotNull
     private boolean obligatoire;
 
+    @Column
+    @org.hibernate.annotations.Type(type="true_false")
+    @NotNull
+    private boolean deleted;
+
+
+
     @Column(nullable = false)
     @org.hibernate.annotations.ColumnDefault("60")
     private int nbMaxEtudiants;
@@ -32,7 +40,8 @@ public class Cour {
     @Column(nullable = false)
     private int nbCredits;
 
-    @ManyToOne
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinTable(
             name = "COUR_UNIVERSITE",
             joinColumns =
@@ -41,12 +50,14 @@ public class Cour {
             @JoinColumn(nullable = false))
     Universite universite;
 
-
-    @OneToMany(mappedBy = "cour", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "cour", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     @org.hibernate.annotations.OnDelete(action = org.hibernate.annotations.OnDeleteAction.CASCADE)
     protected Set<CoursDonne> coursDonnes = new HashSet<>();
 
-    @ManyToMany(mappedBy = "cours")
+
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "cours")
     protected Set<Programme> programmes = new HashSet<Programme>();
 
     public Set<CoursDonne> getCoursDonnes() {
@@ -104,11 +115,26 @@ public class Cour {
         this.nbCredits = nbCredits;
     }
 
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
     public Cour(boolean obligatoire, int nbMaxEtudiants, int nbCredits, Universite universite) {
         this.obligatoire = obligatoire;
         this.nbMaxEtudiants = nbMaxEtudiants;
         this.nbCredits = nbCredits;
         this.universite = universite;
+    }
+    public Cour(String id, boolean obligatoire, int nbMaxEtudiants, int nbCredits) {
+        this.id= id;
+        this.obligatoire = obligatoire;
+        this.nbMaxEtudiants = nbMaxEtudiants;
+        this.nbCredits = nbCredits;
+        this.deleted=false;
     }
     public Cour() {
     }

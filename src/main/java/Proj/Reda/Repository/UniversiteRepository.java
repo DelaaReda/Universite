@@ -60,6 +60,10 @@ public class UniversiteRepository {
     public Universite findById(Long id) {
         return em.find(Universite.class, id);
     }
+    public Universite findByIdReference(Long id) {
+        return em.getReference(Universite.class, id);
+    }
+
 
     public void deleteById(Long id) {
         Universite universite = findById(id);
@@ -84,6 +88,7 @@ public class UniversiteRepository {
     }
 
     public List<Universite> retrieveAllUniversites() {
-        return em.createQuery("select e from Universite e", Universite.class).getResultList();
+        return em.createQuery("select u from Universite u").getResultList();
     }
+
 }

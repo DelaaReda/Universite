@@ -38,7 +38,7 @@ public class Programme {
             @JoinColumn(nullable = false))
     Universite universite;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "PROGRAMME_COUR",
             joinColumns = @JoinColumn(name = "PROGRAMME_ID"),
