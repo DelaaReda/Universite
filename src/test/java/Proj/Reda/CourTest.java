@@ -1,7 +1,7 @@
 //package Proj.Reda;
 //
 //import Proj.Reda.Classes.Cour;
-//import Proj.Reda.Repository.CoursRep;
+//import Proj.Reda.Repository.CoursRepository;
 //import org.junit.Test;
 //import org.junit.runner.RunWith;
 //import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@
 //public class CourTest {
 //
 //    @Autowired
-//    CoursRep repository;
+//    CoursRepository repository;
 //
 //    @Test
 //    public void contextLoads() {

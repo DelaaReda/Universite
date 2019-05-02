@@ -1,5 +1,7 @@
 package Proj.Reda.Classes;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 import javax.validation.constraints.NotNull;
@@ -51,6 +53,7 @@ public abstract class Personne {
     @Pattern(regexp ="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.(?:[a-zA-Z]{2,6})$", message="Invalid E-Mail")
     private String courriel;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinTable(
             name = "PERSONNE_UNIVERSITE",
@@ -60,6 +63,7 @@ public abstract class Personne {
             @JoinColumn(nullable = false))
     Universite universite;
 
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "personne")
     protected Set<CoursDonne> coursDonnes = new HashSet<>();
 

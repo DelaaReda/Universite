@@ -28,6 +28,8 @@ public class CoursDonne {
             this.sessionId = sessionId;
         }
 
+
+
         public boolean equals(Object o) {
             if (o != null && o instanceof Id) {
                 Id that = (Id) o;
@@ -100,5 +102,29 @@ public class CoursDonne {
 
     public CoursDonne() {
     }
-// ...
+
+    public Cour getCour() {
+        return cour;
+    }
+
+    public void setCour(Cour cour) {
+        this.cour = cour;
+    }
+
+    public Session getSession() {
+        return session;
+    }
+
+    public void setSession(Session session) {
+        this.session = session;
+    }
+
+    public Personne getPersonne() {
+        return personne;
+    }
+
+    public void setPersonne(Personne personne) {
+        this.personne = personne;
+    }
+    // ...
 }

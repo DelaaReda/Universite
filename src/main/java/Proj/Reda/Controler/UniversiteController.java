@@ -4,6 +4,7 @@ package Proj.Reda.Controler;
 import java.net.URI;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -37,13 +38,13 @@ public class UniversiteController {
 
     @RequestMapping(value = "/universites", method = RequestMethod.GET)
     public ResponseEntity<List<Universite>> getAllUniversites() {
-        List<Universite> allUniversites = universiteRepository.retrieveAllUniversites();
+        List<Universite> allUniversites = universiteRepository.findAll();
         return new ResponseEntity<>(allUniversites, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/universites/{universiteId}", method = RequestMethod.GET)
     public ResponseEntity<?> getUniversite(@PathVariable Long universiteId) {
-        Universite universite = (universiteRepository.findById(universiteId));
+        Universite universite = universiteRepository.findById(universiteId).get();
         return new ResponseEntity<>(universite, HttpStatus.OK);
     }
 
@@ -62,10 +63,10 @@ public class UniversiteController {
     }
 
     // INF-1  -> modification -> {"nom":"UNIVERSITE du mexique"}
-    @RequestMapping(value = "/universites/{universiteId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/universites/{universiteId}", method = RequestMethod.PATCH)
     public ResponseEntity<?> updateUniversite(@RequestBody Universite universiteAupdater, @PathVariable Long universiteId) {
         // Save the entity - A revoir
-        Universite universitebdd = universiteRepository.findById(universiteId);
+        Universite universitebdd = universiteRepository.findById(universiteId).get();
         universitebdd.setNom(universiteAupdater.getNom());
         universiteRepository.save(universitebdd);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -74,18 +75,18 @@ public class UniversiteController {
     // tested -> attention ! supprime aussi les autres entites relié
     @RequestMapping(value = "/universites/{universiteId}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteUniversite(@PathVariable Long universiteId) {
-        Universite c = universiteRepository.findById(universiteId);
+        Universite c = universiteRepository.findById(universiteId).get();
         universiteRepository.deleteById(universiteId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     // {"nomProg":"Nouveau Programme Securité","type":"MAITRISE","totalCreditsobligatoires":23}
-    @RequestMapping(value = "/universites/{universiteId}/add/programme", method = RequestMethod.POST)
+    @RequestMapping(value = "/universites/{universiteId}/programmes", method = RequestMethod.POST)
     public ResponseEntity<?> addProgramme(@PathVariable Long universiteId, @RequestBody Programme programme) {
-        Universite universite = universiteRepository.findById(universiteId);
+        Universite universite = universiteRepository.findById(universiteId).get();
         Programme nouveauprogramme = new Programme(programme.getNomProg(), programme.getType(), programme.getTotalCreditsobligatoires(), universite);
         universite.addProgramme(nouveauprogramme);
-        programmeRepository.insert(nouveauprogramme);
+        programmeRepository.saveAndFlush(nouveauprogramme);
         universiteRepository.save(universite);
         // Set the location header for the newly created resource
         HttpHeaders responseHeaders = new HttpHeaders();
@@ -97,11 +98,11 @@ public class UniversiteController {
     }
 
     // {"annee":"2031","saison": "AUTOMNE", "dateDebut":"2013-10-10","dateFin":"2034-04-12"}
-    @RequestMapping(value = "/universites/{universiteId}/add/session", method = RequestMethod.POST)
+    @RequestMapping(value = "/universites/{universiteId}/session", method = RequestMethod.POST)
     public ResponseEntity<?> addSession(@PathVariable Long universiteId, @RequestBody Session session) {
-        Universite universite = universiteRepository.findById(universiteId);
+        Universite universite = universiteRepository.findById(universiteId).get();
         Session newSession = new Session(session.getAnnee(), session.getSaison(), session.getDateDebut(), session.getDateFin(), universite);
-        sessionRepository.insert(newSession);
+        sessionRepository.saveAndFlush(newSession);
         universiteRepository.save(universite);
         // Set the location header for the newly created resource
         HttpHeaders responseHeaders = new HttpHeaders();

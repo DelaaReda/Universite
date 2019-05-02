@@ -11,7 +11,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 
 @SpringBootApplication
@@ -27,7 +29,7 @@ public class RedaApplication implements CommandLineRunner {
     private PersonneRepository personneRepository;
 
     @Autowired
-    private CoursRep coursRep;
+    private CoursRepository coursRepository;
 
     @Autowired
     private ProgrammeRepository programmeRepository;
@@ -77,11 +79,11 @@ public class RedaApplication implements CommandLineRunner {
         universite.addSession(session3);
 
         // persistence donnees dans la BDD
-        universiteRepository.insert(universite);
-        universiteRepository.insert(universite2);
-        personneRepository.insert(etudiant);
-        personneRepository.insert(etudiant2);
-        personneRepository.insert(professeur);
+        universiteRepository.saveAndFlush(universite);
+        universiteRepository.saveAndFlush(universite2);
+        personneRepository.saveAndFlush(etudiant);
+        personneRepository.saveAndFlush(etudiant2);
+        personneRepository.saveAndFlush(professeur);
 
 
         // access programmes a partir universite
@@ -89,29 +91,29 @@ public class RedaApplication implements CommandLineRunner {
         logger.info("iterer liste programmes a partir de universite -> {}", programeRecupere.getNomProg());
 
         // suppression du 1er programme recuperer a partir de universite
-//		logger.info("programme a supprimer -> {}", programeRecupere.getNomProg());
-//		universite.deleteProgramme(programeRecupere);
-//		universiteRepository.save(universite);
+		logger.info("programme a supprimer -> {}", programeRecupere.getNomProg());
+		universite.deleteProgramme(programeRecupere);
+		universiteRepository.save(universite);
 
 
-        // recuperer personnes dans universite
-        ArrayList<Personne> people = universiteRepository.recupererPersonnes(1L);
-        logger.info("iterer personnes 1 dans universite -> {}", people.iterator().next().getNom());
-
-        // recuperer universites d'un etudiant
-        logger.info("recuperer universites d'un etudiant -> {}", personneRepository.findUniversite(9L));
+//        // recuperer personnes dans universite
+//        ArrayList<Personne> people = universiteRepository.recupererPersonnes(1L);
+//        logger.info("iterer personnes 1 dans universite -> {}", people.iterator().next().getNom());
+//
+//        // recuperer universites d'un etudiant
+//        logger.info("recuperer universites d'un etudiant -> {}", personneRepository.findUniversite(9L));
 
         // creer un cours
         Cour cour1 = new Cour(true, 45, 89, universite);
         Cour cour2 = new Cour(true, 75, 66, universite);
-        coursRep.save(cour1);
-        coursRep.save(cour2);
-
-        // recuperer cours de universite
-        logger.info("recuperer cours de universite -> {}", universiteRepository.recupererCours(1L));
-
-        // recuperer session de universite
-        logger.info("recuperer sessions de universite -> {}", universiteRepository.recupererSessions(1L).iterator().next().getId());
+        coursRepository.save(cour1);
+        coursRepository.save(cour2);
+//
+//        // recuperer cours de universite
+//        logger.info("recuperer cours de universite -> {}", universiteRepository.recupererCours(1L));
+//
+//        // recuperer session de universite
+//        logger.info("recuperer sessions de universite -> {}", universiteRepository.recupererSessions(1L).iterator().next().getId());
 
         // ajouter cours dans programme
         programme1.getCours().add(cour1);
@@ -130,23 +132,23 @@ public class RedaApplication implements CommandLineRunner {
         coursDonneRepository.save(coursDonne3);
         coursDonneRepository.save(coursDonne4);
 
-        // Retrouve etudiants inscrits dans un cours Par Code de Cour
-        List<Etudiant> etudiantstrouves = coursDonneRepository.retrouveEtudiantsInscrits("INF-1");
-        logger.info("Retrouve Etudiants inscrits -> {}", etudiantstrouves);
-        for (Etudiant stud : etudiantstrouves)
-            logger.info("Retrouve Code Permanent de Etudiant inscris dans coursdonnee -> {}", stud.getCodePerm());
+//        // Retrouve etudiants inscrits dans un cours Par Code de Cour
+//        List<Etudiant> etudiantstrouves = coursDonneRepository.retrouveEtudiantsInscrits("INF-1");
+//        logger.info("Retrouve Etudiants inscrits -> {}", etudiantstrouves);
+//        for (Etudiant stud : etudiantstrouves)
+//            logger.info("Retrouve Code Permanent de Etudiant inscris dans coursdonnee -> {}", stud.getCodePerm());
 
-
-        // Retrouve etudiants inscrits dans un cours Par Code de Cour
-        List<Professeur> profstrouves = coursDonneRepository.retrouveProfesseursDuCour("INF-2");
-        logger.info("Retrouve Professeurs du cour -> {}", profstrouves);
-        for (Professeur prof : profstrouves)
-            logger.info("Retrouve Num Assurance Sociale de Prof respondable du coursdonnee -> {}", prof.getNumAssSociale());
+//
+//        // Retrouve etudiants inscrits dans un cours Par Code de Cour
+//        List<Professeur> profstrouves = coursDonneRepository.retrouveProfesseursDuCour("INF-2");
+//        logger.info("Retrouve Professeurs du cour -> {}", profstrouves);
+//        for (Professeur prof : profstrouves)
+//            logger.info("Retrouve Num Assurance Sociale de Prof respondable du coursdonnee -> {}", prof.getNumAssSociale());
 
 
 
         // get all universites
-        logger.info("All Universites -> {}", universiteRepository.retrieveAllUniversites());
+        logger.info("All Universites -> {}", universiteRepository.findAll());
 
 
     }

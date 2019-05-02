@@ -34,7 +34,7 @@ public class UniversiteTest {
 
     @Test
     public void findById_basic() {
-        Universite universite = repository.findById(3L);
+        Universite universite = repository.findById(3L).get();
         assertEquals("Free Universite", universite.getNom());
     }
 
@@ -49,7 +49,7 @@ public class UniversiteTest {
     @DirtiesContext
     public void save_basic() {
         // get a universite
-        Universite universite = repository.findById(3L);
+        Universite universite = repository.findById(3L).get();
         assertEquals("Free Universite", universite.getNom());
 
         // update details
@@ -57,7 +57,7 @@ public class UniversiteTest {
         repository.save(universite);
 
         // check the value
-        Universite universite1 = repository.findById(3L);
+        Universite universite1 = repository.findById(3L).get();
         assertEquals("Free Universite name - Updated", universite1.getNom());
     }
 
