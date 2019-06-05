@@ -19,13 +19,15 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import Proj.Reda.Classes.Universite;
 import Proj.Reda.Repository.UniversiteRepository;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-@RestController
+
+@Controller
 public class UniversiteController {
 
 
@@ -35,6 +37,13 @@ public class UniversiteController {
     private UniversiteRepository universiteRepository;
     @Autowired
     private ProgrammeRepository programmeRepository;
+
+    // just to test JSP implementation
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String index() {
+        return "index";
+    }
+
 
     @RequestMapping(value = "/universites", method = RequestMethod.GET)
     public ResponseEntity<List<Universite>> getAllUniversites() {
