@@ -27,7 +27,7 @@ import Proj.Reda.Repository.UniversiteRepository;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 
-@Controller
+@RestController
 public class UniversiteController {
 
 
@@ -39,10 +39,10 @@ public class UniversiteController {
     private ProgrammeRepository programmeRepository;
 
     // just to test JSP implementation
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index() {
-        return "index";
-    }
+//    @RequestMapping(value = "/", method = RequestMethod.GET)
+//    public String index() {
+//        return "index";
+//    }
 
 
     @RequestMapping(value = "/universites", method = RequestMethod.GET)
